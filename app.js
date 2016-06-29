@@ -10,7 +10,7 @@ var session = require('express-session');
 
 //Mongoose config
 var mongoose = require('mongoose');
-mongoose.connect(process.env.DB_CONN_GOOD_SPIRITS);
+mongoose.connect("localhost:27017" || process.env.DB_CONN_GOOD_SPIRITS);
 
 
 //Passport configuration
