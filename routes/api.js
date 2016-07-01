@@ -6,15 +6,12 @@ var Likes = require('../models/likes');
 var mongoose = require('mongoose');
 var Likes = require('../models/likes');
 var Beer = require('../models/beer');
-var apiKey = process.env.LCBO_KEY;
-var request = require('request');
 
 
 /* GET other user's profile page. */
 router.get('/users/:id', function(req, res, next) {
   var userId = req.params.id;
   User.find({ "_id": userId }, function(error, data) {
-    console.log(data);
     res.json(data[0]);
   })
 });
@@ -24,18 +21,6 @@ router.get('/beers', function(req,res,next){
   Beer.find({}, function(err, data){
     res.json(data)
   })
-  // for( var i = 1; i <= 11 ; i ++){
-
-  //   request.get('http://www.lcboapi.com/products?per_page=100&page='+ i +'&q=beer&access_key=' + apiKey,
-  //    function(err, data){
-  //      var beerList = JSON.parse(data.body);
-  //      Array.prototype.push.apply(beers, beerList.result);
-  //      console.log(beers.length);
-  //      if(beers.length >= 1022){
-  //        res.json(beers);
-  //      }
-  //   });
-  // }
 });
 
 /* Post Likes to our DB */
@@ -70,14 +55,8 @@ router.post('/likes', function(req, res, next) {
 router.get('/beers/:_id', function(req, res, next) {
   var beerId = req.params._id;
   Beer.findById(beerId,function(err, data){
-    console.log("err " +err)
-    console.log("data: " +data)
     res.json(data)
   });
-  // console.log("beerId------------------- " + beerId);
-  // request.get('http://www.lcboapi.com/products/' + beerId, function(err, data){
-  //   res.json(JSON.parse(data.body).result);
-  // });
 });
 
 //Get Individual User Likes
