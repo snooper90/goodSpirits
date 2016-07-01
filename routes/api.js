@@ -5,6 +5,7 @@ var router = express.Router();
 var Likes = require('../models/likes');
 var mongoose = require('mongoose');
 var Likes = require('../models/likes');
+var Beer = require('../models/beer');
 var apiKey = process.env.LCBO_KEY;
 var request = require('request');
 
@@ -20,19 +21,21 @@ router.get('/users/:id', function(req, res, next) {
 
 //Get all beers from external API
 router.get('/beers', function(req,res,next){
-  var beers = [];
-  for( var i = 1; i <= 11 ; i ++){
+  Beer.find({}, function(err, data){
+    res.json(data)
+  })
+  // for( var i = 1; i <= 11 ; i ++){
 
-    request.get('http://www.lcboapi.com/products?per_page=100&page='+ i +'&q=beer&access_key=' + apiKey,
-     function(err, data){
-       var beerList = JSON.parse(data.body);
-       Array.prototype.push.apply(beers, beerList.result);
-       console.log(beers.length);
-       if(beers.length >= 1022){
-         res.json(beers);
-       }
-    });
-  }
+  //   request.get('http://www.lcboapi.com/products?per_page=100&page='+ i +'&q=beer&access_key=' + apiKey,
+  //    function(err, data){
+  //      var beerList = JSON.parse(data.body);
+  //      Array.prototype.push.apply(beers, beerList.result);
+  //      console.log(beers.length);
+  //      if(beers.length >= 1022){
+  //        res.json(beers);
+  //      }
+  //   });
+  // }
 });
 
 /* Post Likes to our DB */
@@ -64,12 +67,17 @@ router.post('/likes', function(req, res, next) {
 
 
 //Get Individual Beers from API
-router.get('/beers/:id', function(req, res, next) {
-  var beerId = req.params.id;
-  console.log("beerId------------------- " + beerId);
-  request.get('http://www.lcboapi.com/products/' + beerId, function(err, data){
-    res.json(JSON.parse(data.body).result);
+router.get('/beers/:_id', function(req, res, next) {
+  var beerId = req.params._id;
+  Beer.findById(beerId,function(err, data){
+    console.log("err " +err)
+    console.log("data: " +data)
+    res.json(data)
   });
+  // console.log("beerId------------------- " + beerId);
+  // request.get('http://www.lcboapi.com/products/' + beerId, function(err, data){
+  //   res.json(JSON.parse(data.body).result);
+  // });
 });
 
 //Get Individual User Likes

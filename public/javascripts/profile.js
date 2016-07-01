@@ -33,7 +33,7 @@ function getLikes(){
 
 function getBeers(arrLikes){
 
-
+console.log("likes: " + arrLikes)
   for (var i = 0; i < arrLikes.length; i++) {
     $.ajax({
     url:'/api/beers/' + arrLikes[i].beerId,
@@ -41,6 +41,7 @@ function getBeers(arrLikes){
     dataType:'JSON'
     })
     .done(function(data, textStatus){
+      console.log(data)
       beerList.push(data);
       $("#beerlikes").html(null);
       listLikes();
@@ -49,16 +50,20 @@ function getBeers(arrLikes){
       console.log(data)
       console.log("ERROR getting beers. status: " + textStatus);
     });
-  }
+   }
 }
 
 function listLikes(){
+  for(i = 0; i < beerList.length; i++){
+  //  console.log(beerList[i]);
+  }
+
   for(i = 0; i < beerList.length; i++){
     var like = likeList[i].review;
     console.log(like == true)
     if (like) {
       like = '"' + like + '"';
     }
-    $('#beerlikes').append('<div class="well well-sm col-sm-3"><a href="/beers/'+beerList[i].id + '">' + beerList[i].name + '</a><p>'+ like +'</p></div>');
+    $('#beerlikes').append('<div class="well well-sm col-sm-3"><a href="/beers/'+beerList[i]._id + '">' + beerList[i].name + '</a><p>'+ like +'</p></div>');
   }
 };

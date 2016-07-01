@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
     var Beers = new Schema({
+        "_id":Number,
         "brewery_id": Number,
         "name": String,
         "cat_id": Number,

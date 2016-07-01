@@ -23,6 +23,7 @@ function updateBeerList(){
   var searchedId = [];
   var searchedBeers = [];
   for (var i = 0, j = 0; i < beerName.length; i++) {
+    console.log(beerName[i])
     if (beerName[i].match(new RegExp(string, "gi"))){
       searchedBeers[j] = beerName[i]
       searchedId[j] = beerId[i]
@@ -52,7 +53,7 @@ function getBeers(){
   .done(function(data, textStatus){
     for( var i = 0; i < data.length; i++){
       beerName.push(data[i].name);
-      beerId.push(data[i].id);
+      beerId.push(data[i]._id);
     }
     $('#beerList').html(null);
     for(i = 0; i < beerName.length; i++){
