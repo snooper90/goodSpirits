@@ -1,5 +1,3 @@
-
-
 //global vars
 var beerName = [];
 var beerId = [];
@@ -12,9 +10,32 @@ $(document).ready(function() {
   $('#searchForBeer').keyup(function(e){
     updateBeerList();
   });
-
-
 });
+
+function getBeers(){
+  $('#beerList').html('loading...');
+  $.ajax({
+    url: '/api/beers',
+    method:'get',
+    dataType:'json'
+  })
+  .done(function(data, textStatus){
+    for( var i = 0; i < data.length; i++){
+      beerName.push(data[i].name);
+      beerId.push(data[i]._id);
+    }
+    $('#beerList').html(null);
+    for(i = 0; i < beerName.length; i++){
+      appendToList(beerId[i] , beerName[i])
+    };
+    // event listener for like btns
+    setEventForLike();
+  })
+  .fail(function(err, textStatus){
+    console.log(err);
+  })
+}
+
 
 function updateBeerList(){
   string = $('#searchForBeer').val();
@@ -43,29 +64,7 @@ function listArr(list , id){
 }
 
 
-function getBeers(){
-  $('#beerList').html('loading...');
-  $.ajax({
-    url: '/api/beers',
-    method:'get',
-    dataType:'json'
-  })
-  .done(function(data, textStatus){
-    for( var i = 0; i < data.length; i++){
-      beerName.push(data[i].name);
-      beerId.push(data[i]._id);
-    }
-    $('#beerList').html(null);
-    for(i = 0; i < beerName.length; i++){
-      appendToList(beerId[i] , beerName[i])
-    };
-    // event listener for like btns
-    setEventForLike();
-  })
-  .fail(function(err, textStatus){
-    console.log(err);
-  })
-}
+
 
 //function to add likes to db
 function setEventForLike(){
